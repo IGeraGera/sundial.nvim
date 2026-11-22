@@ -6,6 +6,22 @@ pairs warm paper with daylight inks, after light Gruvbox and Kanagawa Lotus.
 
 Requires Neovim 0.10 or newer. No runtime dependencies.
 
+## Screenshots
+
+Last Light:
+
+![Sundial Last Light in Neovim](assets/screenshots/last-light.png)
+
+First Light:
+
+![Sundial First Light in Neovim](assets/screenshots/first-light.png)
+
+Telescope, in the bottom third so the buffer stays readable:
+
+![Telescope in Last Light](assets/screenshots/last-light-telescope.png)
+
+![Telescope in First Light](assets/screenshots/first-light-telescope.png)
+
 ## Installation
 
 With lazy.nvim:

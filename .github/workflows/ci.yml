@@ -35,6 +35,8 @@ jobs:
         run: |
           nvim --version | head -1
           nvim --headless -u NONE -n -i NONE -l tests/smoke.lua
+      - name: Contrast regression test
+        run: nvim --headless -u NONE -n -i NONE -l tests/contrast.lua
 
   extras:
     runs-on: ubuntu-latest

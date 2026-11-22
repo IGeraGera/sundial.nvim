@@ -22,7 +22,7 @@ return function(c, opts, variant)
     WinSeparator = { fg = c.bg_selection },
     StatusLine = { fg = c.fg, bg = c.bg_selection },
     StatusLineNC = { fg = c.fg_muted, bg = c.bg_panel },
-    Visual = { bg = c.bg_selection },
+    Visual = { fg = c.fg, bg = c.bg_visual },
     Search = { fg = c.fg, bg = c.bg_search },
     CurSearch = { fg = c.bg, bg = c.gold, bold = true },
     IncSearch = "CurSearch",
@@ -47,10 +47,14 @@ return function(c, opts, variant)
     diffIndexLine = "diffFile",
   }
   local statuses = { Error = c.rose, Warn = c.gold, Info = c.blue, Hint = c.teal, Ok = c.green }
+  -- Inline diagnostics inherit the underlying line fill, including DiffText.
+  -- Pull only the low-contrast virtual text inks toward the normal foreground.
+  local inline_mix = variant == "last" and { Error = 0.2 } or { Warn = 0.2, Info = 0.3, Hint = 0.2, Ok = 0.25 }
   for name, fg in pairs(statuses) do
     g["Diagnostic" .. name] = { fg = fg }
     g["DiagnosticUnderline" .. name] = { sp = fg, undercurl = true }
-    g["DiagnosticVirtualText" .. name] = "Diagnostic" .. name
+    local strength = inline_mix[name]
+    g["DiagnosticVirtualText" .. name] = strength and { fg = mix(fg, c.fg, strength) } or "Diagnostic" .. name
   end
   for _, change in ipairs({
     { "Add", "Added", "plus", c.green, c.diff_add },

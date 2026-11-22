@@ -12,6 +12,7 @@
 - `scripts/screenshots/` — README image generator and checker. Not part of the plugin.
 - `extras/kitty`, `extras/vscode` — generated output. Never edit by hand.
 - `tests/smoke.lua` — headless checks for both schemes and the options API.
+- `tests/contrast.lua` — contrast checks for default opaque editing states.
 
 ## Rules
 
@@ -70,6 +71,7 @@ CI does not run it, so images are refreshed by hand.
 
 - `stylua --check` over `lua/`, `colors/`, `scripts/`, and `tests/`.
 - The smoke test on Neovim `v0.10.4`, `stable`, and `nightly`.
+- The contrast test on the same versions, with a 4.5:1 floor for the checked text pairs.
 - Regenerates the Kitty and VS Code extras and fails if `extras/` changed,
   then validates the JSON.
 
@@ -78,8 +80,8 @@ Run the same checks locally before pushing:
 ```sh
 npx --yes @johnnymorganz/stylua-bin@2 --check lua colors scripts tests
 nvim --headless -u NONE -n -i NONE -l tests/smoke.lua
+nvim --headless -u NONE -n -i NONE -l tests/contrast.lua
 nvim --headless -u NONE -n -i NONE -l scripts/kitty.lua
 nvim --headless -u NONE -n -i NONE -l scripts/vscode.lua
 git diff --exit-code -- extras
 ```
-

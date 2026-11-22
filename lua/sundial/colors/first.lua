@@ -4,6 +4,7 @@ return {
   bg_panel = "#E9E1BF",
   bg_line = "#EFE8CB",
   bg_selection = "#DED4AC",
+  bg_visual = "#B8AA76",
   bg_search = "#E8D48C",
   border = "#B4AA84",
   fg = "#3B3833",

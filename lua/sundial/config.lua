@@ -1,7 +1,7 @@
 local options = {}
 local M = {}
 
----@param user? FirstLightOptions
+---@param user? SundialOptions
 function M.setup(user)
   options = vim.deepcopy(user or {})
 end

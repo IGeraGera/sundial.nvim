@@ -1,7 +1,7 @@
 {
   "$schema": "vscode://schemas/color-theme",
   "colors": {
-    "activityBar.background": "#0D1015",
+    "activityBar.background": "#13171d",
     "activityBar.border": "#536170",
     "activityBar.foreground": "#D2CABB",
     "activityBar.inactiveForeground": "#8B8994",
@@ -111,7 +111,7 @@
     "sideBarSectionHeader.background": "#171C23",
     "sideBarSectionHeader.foreground": "#D2CABB",
     "sideBarTitle.foreground": "#D2CABB",
-    "statusBar.background": "#293541",
+    "statusBar.background": "#34424f",
     "statusBar.border": "#536170",
     "statusBar.foreground": "#D2CABB",
     "statusBar.noFolderBackground": "#171C23",

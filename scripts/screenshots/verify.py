@@ -163,6 +163,30 @@ for mode in ("hero", "telescope"):
     same = sum(1 for x, y in zip(*masks) if x == y) / len(masks[0])
     check(same > 0.995, f"{mode}: identical layout across schemes ({same:.2%} of pixels)")
 
+print("\ndaylight-and-dusk.png")
+img, fmt = load("daylight-and-dusk.png")
+check(fmt == "PNG" and img.mode == "RGB" and img.size == (782, 353), "compact RGB comparison")
+mid = img.width // 2
+for scheme, left, right in (("first-light", 0, mid), ("last-light", mid, img.width)):
+    _, pal = schemes[scheme]
+    panel = img.crop((left, 0, right, img.height))
+    check(panel.getpixel((0, 0)) == hex_to_rgb(pal["bg"]), f"{scheme} canvas on the correct side")
+    colors = Counter(panel.get_flattened_data())
+    check(all(colors[hex_to_rgb(pal[key])] > 0 for key in ("fg", "rose", "amber")), f"{scheme} syntax visible")
+
+print("\nfirst-light-editing.png")
+img, fmt = load("first-light-editing.png")
+check(fmt == "PNG" and img.mode == "RGB" and img.size == (777, 344), "compact RGB editing view")
+_, pal = schemes["first-light"]
+for label, bounds, color in (
+    ("changed operator fill", (278, 102, 304, 130), "bg_selection"),
+    ("change sign in the gutter", (18, 102, 31, 130), "blue"),
+    ("inline error text", (520, 158, 720, 186), "rose"),
+    ("search match fill", (213, 242, 304, 270), "bg_search"),
+):
+    pixels = img.crop(bounds).get_flattened_data()
+    check(hex_to_rgb(pal[color]) in pixels, label)
+
 print("\nREADME")
 readme = (repo / "README.md").read_text()
 linked = re.findall(r"\]\((assets/screenshots/[^)]+)\)", readme)

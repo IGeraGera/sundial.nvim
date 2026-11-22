@@ -4,14 +4,17 @@ Generates `assets/screenshots/`, the images in the top-level README.
 
 ```sh
 ./setup.sh                 # clone telescope, plenary, mini into ~/.cache/sundial-screenshots
-./render.py --all          # rewrite all four images
+./render.py --all          # rewrite all README images
 ./verify.py                # palette, layout, README and reproducibility checks
 ```
 
-`--all` renders both schemes in both modes. To iterate on a single image:
+`--all` renders both full-size editor and Telescope views, the side-by-side
+comparison, and the First Light editing example. To iterate on a single image:
 
 ```sh
 ./render.py --scheme first-light --mode telescope
+./render.py --mode comparison
+./render.py --scheme first-light --mode editing
 ./render.py --scheme last-light --mode hero --out /tmp/try.png --size 30
 ```
 
@@ -40,6 +43,11 @@ Override the cache, font, or font directory with `SHOT_CACHE`, `SHOT_FONT`,
 and `SHOT_FONT_DIR`.
 
 ## What is drawn
+
+`phase.lua` is the shared fixture for the comparison and the editing screenshot.
+The editing capture changes `>` to `>=` and marks it with `DiffText` and a `~`
+sign, introduces a misspelling with a Neovim diagnostic, and highlights a
+search match. These are rendered by Neovim, not painted onto the PNG.
 
 `sun.lua` is the demo buffer, opened at line 23 on an 88×28 grid with 26 px
 JetBrainsMono NFM. `init.lua` loads the theme straight from this checkout,

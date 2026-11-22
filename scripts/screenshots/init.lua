@@ -43,6 +43,46 @@ vim.cmd("syntax on")
 
 vim.cmd.colorscheme(vim.env.SHOT_SCHEME or "last-light")
 
+local mode = vim.env.SHOT_MODE
+if mode == "comparison" or mode == "editing" then
+  vim.opt.laststatus = 0
+  vim.opt.cursorline = false
+  vim.opt.number = mode == "editing"
+  if mode == "editing" then
+    vim.opt.signcolumn = "yes:1"
+    vim.api.nvim_create_autocmd("BufReadPost", {
+      once = true,
+      pattern = "phase.lua",
+      callback = function()
+        local buf = vim.api.nvim_get_current_buf()
+        local ns = vim.api.nvim_create_namespace("sundial.demo")
+        vim.api.nvim_buf_set_text(buf, 3, 14, 3, 15, { ">=" })
+        vim.api.nvim_buf_set_text(buf, 5, 20, 5, 25, { "CIVLL" })
+        vim.api.nvim_buf_set_extmark(buf, ns, 3, 14, {
+          end_col = 16,
+          hl_group = "DiffText",
+          hl_mode = "combine",
+          sign_text = "~",
+          sign_hl_group = "GitSignsChange",
+        })
+        vim.diagnostic.set(ns, buf, {
+          {
+            lnum = 5,
+            col = 20,
+            end_col = 25,
+            severity = vim.diagnostic.severity.ERROR,
+            message = "Unknown name",
+          },
+        }, { virtual_text = { prefix = "!", spacing = 2 }, signs = false })
+        vim.fn.setreg("/", '"night"')
+        vim.opt.hlsearch = true
+        vim.v.hlsearch = 1
+      end,
+    })
+  end
+  return
+end
+
 require("mini.statusline").setup({
   set_vim_settings = false,
   use_icons = true,

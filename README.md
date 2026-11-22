@@ -8,19 +8,27 @@ Requires Neovim 0.10 or newer. No runtime dependencies.
 
 ## Screenshots
 
-Last Light:
+**First Light** (left) and **Last Light** (right), on the same Lua function:
 
-![Sundial Last Light in Neovim](assets/screenshots/last-light.png)
+![The same Lua function in First Light and Last Light, side by side](assets/screenshots/daylight-and-dusk.png)
 
-First Light:
+**First Light while editing:** the gutter `~` and tinted `>=` mark a changed
+condition, the inline `!` flags `CIVLL`, and search highlights `"night"`.
+
+![First Light showing a changed operator, an inline diagnostic, and a search match](assets/screenshots/first-light-editing.png)
+
+<details>
+<summary>Full-size editor and Telescope screenshots</summary>
 
 ![Sundial First Light in Neovim](assets/screenshots/first-light.png)
+![Sundial Last Light in Neovim](assets/screenshots/last-light.png)
 
 Telescope, in the bottom third so the buffer stays readable:
 
+![Telescope in First Light](assets/screenshots/first-light-telescope.png)
 ![Telescope in Last Light](assets/screenshots/last-light-telescope.png)
 
-![Telescope in First Light](assets/screenshots/first-light-telescope.png)
+</details>
 
 ## Readability
 

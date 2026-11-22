@@ -8,6 +8,7 @@ straight from the highlight groups, which is what a theme screenshot wants.
 
   ./render.py --all
   ./render.py --scheme first-light --mode telescope
+  ./render.py --scheme first-light --mode editing
 
 Requires python3 with Pillow and msgpack, Neovim, and the JetBrainsMono Nerd
 Font (see README.md in this directory).
@@ -19,6 +20,7 @@ import select
 import subprocess
 import sys
 import time
+from tempfile import TemporaryDirectory
 
 import msgpack
 from PIL import Image, ImageDraw, ImageFont
@@ -322,8 +324,9 @@ def capture(scheme, mode, out, cols, rows, size, pad, line, cursor):
     for path in ("xdg/data", "xdg/state", "xdg/config", "xdg/cache"):
         (CACHE / path).mkdir(parents=True, exist_ok=True)
 
+    demo = "phase.lua" if mode in ("comparison", "editing") else "sun.lua"
     nvim = Nvim(
-        ["-u", str(HERE / "init.lua"), "-c", f"normal! {line}G", "sun.lua"],
+        ["-u", str(HERE / "init.lua"), "-c", f"normal! {line}G", demo],
         env,
         str(HERE),
     )
@@ -351,20 +354,41 @@ def capture(scheme, mode, out, cols, rows, size, pad, line, cursor):
     err = nvim.proc.stderr.read().decode(errors="replace").strip()
     if err:
         print(err, file=sys.stderr)
+    if mode == "comparison":
+        screen.grid.cursor_visible = False
     return render(screen, out, size, pad, cursor)
 
 
 def default_out(scheme, mode):
-    name = f"{scheme}.png" if mode == "hero" else f"{scheme}-telescope.png"
+    if mode == "comparison":
+        name = "daylight-and-dusk.png"
+    else:
+        name = f"{scheme}.png" if mode == "hero" else f"{scheme}-{mode}.png"
     return REPO / "assets" / "screenshots" / name
+
+
+def comparison(out):
+    with TemporaryDirectory(dir=CACHE) as tmp:
+        panels = []
+        for scheme in ("first-light", "last-light"):
+            panel = pathlib.Path(tmp) / f"{scheme}.png"
+            capture(scheme, "comparison", panel, 33, 13, 19, 14, 12, "bar")
+            with Image.open(panel) as image:
+                panels.append(image.copy())
+        width, height = panels[0].size
+    image = Image.new("RGB", (2 * width, height))
+    for col, panel in enumerate(panels):
+        image.paste(panel, (col * width, 0))
+    image.save(out, optimize=True)
+    return out
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--scheme", default="last-light", choices=["last-light", "first-light"])
-    parser.add_argument("--mode", default="hero", choices=["hero", "telescope"])
+    parser.add_argument("--mode", default="hero", choices=["hero", "telescope", "comparison", "editing"])
     parser.add_argument("--out")
-    parser.add_argument("--all", action="store_true", help="render all four default images")
+    parser.add_argument("--all", action="store_true", help="render all README images")
     parser.add_argument("--cols", type=int, default=GRID_COLS)
     parser.add_argument("--rows", type=int, default=GRID_ROWS)
     parser.add_argument("--size", type=int, default=FONT_SIZE)
@@ -381,15 +405,19 @@ def main():
     if missing:
         sys.exit(f"missing {', '.join(missing)} in {site}\nrun {HERE / 'setup.sh'} first")
 
-    jobs = (
-        [(scheme, mode) for scheme in ("last-light", "first-light") for mode in ("hero", "telescope")]
-        if args.all
-        else [(args.scheme, args.mode)]
-    )
+    jobs = [(args.scheme, args.mode)]
+    if args.all:
+        jobs = [("first-light", "comparison"), ("first-light", "editing")]
+        jobs += [(scheme, mode) for scheme in ("last-light", "first-light") for mode in ("hero", "telescope")]
     for scheme, mode in jobs:
         out = pathlib.Path(args.out) if args.out else default_out(scheme, mode)
         out.parent.mkdir(parents=True, exist_ok=True)
-        print(capture(scheme, mode, out, args.cols, args.rows, args.size, args.pad, args.line, args.cursor))
+        if mode == "comparison":
+            print(comparison(out))
+        elif mode == "editing":
+            print(capture(scheme, mode, out, 57, 11, 21, 18, 4, "bar"))
+        else:
+            print(capture(scheme, mode, out, args.cols, args.rows, args.size, args.pad, args.line, args.cursor))
 
 
 if __name__ == "__main__":

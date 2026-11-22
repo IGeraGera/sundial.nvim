@@ -30,14 +30,6 @@ Telescope, in the bottom third so the buffer stays readable:
 
 </details>
 
-## Readability
-
-Both schemes are **contrast-tested on the default opaque backgrounds**.
-[CI checks](tests/contrast.lua) for at least 4.5:1 on normal text, comments
-(including on the cursor line), Visual selections, search and current search,
-selected completion text and matches, and inline diagnostic text on diff fills.
-That checks color contrast, not how comfortable a theme will feel on your display.
-
 ## Installation
 
 With lazy.nvim:

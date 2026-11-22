@@ -1,0 +1,26 @@
+{
+  "name": "sundial-theme",
+  "displayName": "Sundial",
+  "description": "Last Light and First Light: warm paper and near-black themes.",
+  "version": "0.1.0",
+  "publisher": "sundial",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": ["Themes"],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Last Light",
+        "uiTheme": "vs-dark",
+        "path": "./last-light.json"
+      },
+      {
+        "label": "First Light",
+        "uiTheme": "vs",
+        "path": "./first-light.json"
+      }
+    ]
+  }
+}

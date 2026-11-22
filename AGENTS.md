@@ -1,0 +1,68 @@
+# AGENTS
+
+## Layout
+
+- `lua/sundial/colors/{last,first}.lua` — palettes. These are the source of truth.
+- `lua/sundial/colors/init.lua` — derives diff, UI, and terminal colors.
+- `lua/sundial/groups/` — editor, syntax, markup, and plugin highlight groups.
+- `colors/{last,first}-light.lua` — Neovim entry points and scheme names.
+- `after/queries/` — Tree-sitter extensions for Markdown tables and YAML keys.
+- `scripts/{kitty,vscode}.lua` — generators for `extras/`.
+- `extras/kitty`, `extras/vscode` — generated output. Never edit by hand.
+- `tests/smoke.lua` — headless checks for both schemes and the options API.
+
+## Rules
+
+- Change palettes or groups first; regenerate `extras/` afterwards.
+- Keep the scheme names `last-light` and `first-light`; `sundial` is the plugin.
+- Add plugin highlights to `groups/plugins.lua`. Names are inert until the plugin
+  uses them, so the theme never loads a plugin.
+- A new scheme needs a palette in `colors/`, an entry point in `colors/`, and
+  the name mapping in `theme.lua` plus `tests/smoke.lua`.
+
+## Sync Neovim with the extras
+
+Run from the repository root after any palette or group change:
+
+```sh
+nvim --headless -u NONE -n -i NONE -l scripts/kitty.lua
+nvim --headless -u NONE -n -i NONE -l scripts/vscode.lua
+nvim --headless -u NONE -n -i NONE -l tests/smoke.lua
+```
+
+Then review the generated files:
+
+```sh
+git diff extras/
+```
+
+The Kitty conf and the VS Code / Hermes JSON must match the palettes: both read
+`colors.terminal` and the same semantic colors, so a manual edit in `extras/`
+will be overwritten by the next generator run.
+
+Install surfaces:
+
+- Kitty: include `extras/kitty/<scheme>.conf` from `kitty.conf`.
+- VS Code: `code --extensionDevelopmentPath="$PWD/extras/vscode"`.
+- Hermes: import the published VS Code theme, or paste the JSON where the
+  Desktop importer accepts theme text.
+
+## CI
+
+`.github/workflows/ci.yml` runs on push and pull request:
+
+- `stylua --check` over `lua/`, `colors/`, `scripts/`, and `tests/`.
+- The smoke test on Neovim `v0.10.4`, `stable`, and `nightly`.
+- Regenerates the Kitty and VS Code extras and fails if `extras/` changed,
+  then validates the JSON.
+
+Run the same checks locally before pushing:
+
+```sh
+npx --yes @johnnymorganz/stylua-bin@2 --check lua colors scripts tests
+nvim --headless -u NONE -n -i NONE -l tests/smoke.lua
+nvim --headless -u NONE -n -i NONE -l scripts/kitty.lua
+nvim --headless -u NONE -n -i NONE -l scripts/vscode.lua
+git diff --exit-code -- extras
+```
+

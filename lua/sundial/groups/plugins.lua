@@ -1,0 +1,52 @@
+local mix = require("sundial.util").mix
+
+return function(c, opts, variant)
+  -- These names are inert until their plugins use them. No plugin manager coupling.
+  local selection = mix(c.bg_panel, c.slate, 0.24)
+  -- In the light theme the prompt sits above the list; in the dark theme it is recessed.
+  local prompt = variant == "last" and mix(c.bg, c.bg_panel, 0.55) or c.bg_line
+  return {
+    BlinkCmpMenuBorder = { fg = c.border, bg = c.bg_panel },
+    BlinkCmpDocBorder = "BlinkCmpMenuBorder",
+    BlinkCmpSignatureHelpBorder = "BlinkCmpMenuBorder",
+    BlinkCmpLabelMatch = "PmenuMatch",
+    OilDir = { fg = c.slate },
+    GitSignsAdd = "Added",
+    GitSignsChange = "Changed",
+    GitSignsDelete = "Removed",
+    TelescopeBorder = { fg = c.border, bg = c.bg_panel },
+    TelescopeTitle = { fg = c.slate, bg = c.bg_panel, bold = true },
+    TelescopeNormal = { fg = c.fg, bg = c.bg_panel },
+    TelescopeResultsNormal = "TelescopeNormal",
+    TelescopeResultsBorder = "TelescopeBorder",
+    TelescopeResultsTitle = "TelescopeTitle",
+    TelescopePreviewNormal = "TelescopeNormal",
+    TelescopePreviewBorder = "TelescopeBorder",
+    TelescopePreviewTitle = "TelescopeTitle",
+    TelescopePromptNormal = { fg = c.fg, bg = prompt },
+    TelescopePromptBorder = { fg = c.border, bg = prompt },
+    TelescopePromptTitle = { fg = c.green, bg = prompt, bold = true },
+    TelescopePromptPrefix = { fg = c.green, bg = prompt },
+    TelescopeSelection = { fg = c.fg, bg = selection, bold = true },
+    TelescopeSelectionCaret = { fg = c.slate, bg = selection, bold = true },
+    TelescopeMultiSelection = "TelescopeSelection",
+    TelescopeMatching = { fg = c.completion, bold = true },
+    WhichKeyFloat = { bg = c.bg_panel },
+    WhichKeyBorder = { fg = c.border, bg = c.bg_panel },
+    WhichKey = { fg = c.slate },
+    WhichKeyGroup = { fg = c.copper },
+    WhichKeyDesc = { fg = c.fg },
+    WhichKeySeparator = { fg = c.comment },
+    WhichKeyValue = { fg = c.fg_muted },
+    MiniStatuslineModeNormal = { fg = c.bg, bg = c.blue, bold = true },
+    MiniStatuslineModeInsert = { fg = c.bg, bg = c.green, bold = true },
+    MiniStatuslineModeVisual = { fg = c.bg, bg = c.lavender, bold = true },
+    MiniStatuslineModeReplace = { fg = c.bg, bg = c.rose, bold = true },
+    MiniStatuslineModeCommand = { fg = c.bg, bg = c.gold, bold = true },
+    MiniStatuslineModeOther = { fg = c.bg, bg = c.slate, bold = true },
+    MiniStatuslineDevinfo = { fg = c.fg_muted, bg = c.bg_panel },
+    MiniStatuslineFilename = { fg = c.fg, bg = c.bg_panel },
+    MiniStatuslineFileinfo = { fg = c.fg_muted, bg = c.bg_panel },
+    MiniStatuslineInactive = { fg = c.comment, bg = c.bg_panel },
+  }
+end

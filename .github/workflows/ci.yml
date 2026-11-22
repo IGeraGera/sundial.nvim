@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check formatting
+        run: npx --yes @johnnymorganz/stylua-bin@2 --check lua colors scripts tests
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [v0.10.4, stable, nightly]
+    env:
+      NVIM_LOG_FILE: /dev/null
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: ${{ matrix.version }}
+      - name: Smoke test
+        run: |
+          nvim --version | head -1
+          nvim --headless -u NONE -n -i NONE -l tests/smoke.lua
+
+  extras:
+    runs-on: ubuntu-latest
+    env:
+      NVIM_LOG_FILE: /dev/null
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: stable
+      - name: Regenerate Kitty and VS Code themes
+        run: |
+          nvim --headless -u NONE -n -i NONE -l scripts/kitty.lua
+          nvim --headless -u NONE -n -i NONE -l scripts/vscode.lua
+      - name: Fail when generated files drift
+        run: git diff --exit-code -- extras
+      - name: Validate JSON
+        run: |
+          for file in extras/vscode/*.json; do
+            python3 -m json.tool "$file" >/dev/null
+          done

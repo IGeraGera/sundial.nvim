@@ -1,3 +1,4 @@
 nvim.log
 *.swp
 *.vsix
+/TODO.MD

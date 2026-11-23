@@ -23,6 +23,10 @@
   uses them, so the theme never loads a plugin.
 - A new scheme needs a palette in `colors/`, an entry point in `colors/`, and
   the name mapping in `theme.lua` plus `tests/smoke.lua`.
+- Never commit identifiable personal information in files, screenshots, or
+  logs: real names, email addresses, home-directory paths, hostnames,
+  usernames, tokens, or credentials. Review `git diff --cached` before every
+  commit.
 
 ## Sync Neovim with the extras
 

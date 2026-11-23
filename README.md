@@ -1,10 +1,18 @@
+<div align="center">
+
+<img src="assets/sundial.svg" alt="A blue-ink sundial with a small gold sun" width="128">
+
 # Sundial
 
-Two Neovim themes inspired by the light you work in. **Last Light** puts warm
-ivory and amber on a near-black canvas. **First Light**, its light counterpart,
-pairs warm paper with daylight inks, after light Gruvbox and Kanagawa Lotus.
+<em>Two Neovim themes inspired by the light you work in.</em>
 
-Requires Neovim 0.10 or newer. No runtime dependencies.
+**Last Light** puts warm ivory and amber on a near-black canvas.
+**First Light**, its light counterpart, pairs warm paper with daylight inks,
+after light Gruvbox and Kanagawa Lotus.
+
+<sub>Requires Neovim 0.10 or newer. No runtime dependencies.</sub>
+
+</div>
 
 ## Screenshots
 

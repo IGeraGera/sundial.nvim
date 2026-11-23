@@ -48,14 +48,15 @@ jobs:
         with:
           neovim: true
           version: stable
-      - name: Regenerate Kitty and VS Code themes
+      - name: Regenerate Kitty, VS Code, and OpenCode themes
         run: |
           nvim --headless -u NONE -n -i NONE -l scripts/kitty.lua
           nvim --headless -u NONE -n -i NONE -l scripts/vscode.lua
+          nvim --headless -u NONE -n -i NONE -l scripts/opencode.lua
       - name: Fail when generated files drift
         run: git diff --exit-code -- extras
       - name: Validate JSON
         run: |
-          for file in extras/vscode/*.json; do
+          for file in extras/vscode/*.json extras/opencode/*.json; do
             python3 -m json.tool "$file" >/dev/null
           done

@@ -1,0 +1,125 @@
+# Palette: https://github.com/IGeraGera/sundial.nvim/blob/main/extras/vscode/last-light.json
+name: last-light
+description: Sundial Last Light — near-black with muted blues
+colors:
+  background: "#0D1015"
+  ui_text: "#D2CABB"
+  ui_accent: "#819FB7"
+  ui_label: "#D2CABB"
+  ui_border: "#536170"
+  ui_ok: "#91AE80"
+  ui_warn: "#BBA66B"
+  ui_error: "#C48196"
+  banner_accent: "#819FB7"
+  banner_title: "#9CB6CC"
+  banner_text: "#D2CABB"
+  banner_dim: "#A89F90"
+  banner_border: "#536170"
+  prompt: "#D2CABB"
+  input_rule: "#819FB7"
+  response_border: "#819FB7"
+  status_bar_bg: "#34424F"
+  status_bar_text: "#D2CABB"
+  status_bar_good: "#91AE80"
+  status_bar_warn: "#BBA66B"
+  status_bar_bad: "#C48196"
+  status_bar_critical: "#C48196"
+  session_label: "#9CB6CC"
+  session_border: "#536170"
+  completion_menu_bg: "#1B222B"
+  completion_menu_current_bg: "#303B47"
+  syntax_string: "#C49254"
+  syntax_number: "#AB97C1"
+  syntax_keyword: "#C48196"
+  syntax_comment: "#8B8994"
+
+# Desktop only: retain the warm ink while making quiet transcript UI readable.
+customCSS: |
+  html:root {
+    --ui-text-tertiary: #A89F90;
+    --conversation-scaffold-text: #A89F90;
+    --conversation-scaffold-meta: #8B8994;
+  }
+
+  [data-slot='aui_assistant-message-content'] [data-conversation-scaffold],
+  [data-slot='aui_background-result'] [data-conversation-scaffold],
+  [data-slot='aui_background-resume'] {
+    opacity: 0.9;
+  }
+
+  [data-slot='composer-rich-input']:is(:empty, [data-empty])::before {
+    color: #A89F90 !important;
+  }
+
+  /* Match the light skin's layout boundaries without tinting dark chrome. */
+  html:root { --last-light-divider: color-mix(in srgb, #536170 55%, transparent); }
+
+  /* Keep the sidebar divider when its Bots tab is selected too. */
+  [data-panel-header]:has([data-tree-tab='sessions'],
+                          [data-tree-tab^='file:'][aria-selected='true'],
+                          [data-tree-tab='terminal'][aria-selected='true'])::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 1px;
+    background: var(--last-light-divider);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  [class~='group/project-header'] {
+    box-shadow: inset 0 -1px 0 var(--last-light-divider);
+  }
+
+  /* Hermes messenger: replace only the fresh conversation intro, not bot or board titles. */
+  @media (forced-colors: none) {
+    [data-slot='thread'] [data-slot='aui_intro'] > div {
+      display: grid;
+      grid-template-columns: clamp(3rem, 22%, 8.75rem) minmax(0, max-content);
+      gap: 0 clamp(0.6rem, 4vw, 2.75rem);
+      align-items: center;
+      justify-content: center;
+      text-align: left;
+      max-width: min(var(--composer-width, 40rem), 100%);
+    }
+    [data-slot='thread'] [data-slot='aui_intro'] > div::before {
+      content: '';
+      grid-area: 1 / 1 / 3 / 2;
+      width: 100%;
+      aspect-ratio: 144 / 112;
+      background: center / contain no-repeat url("data:image/svg+xml,%3Csvg%20class%3D%22mark%22%20viewBox%3D%220%200%20144%20112%22%20xmlns%3D%22http://www.w3.org/2000/svg%22%20fill%3D%22none%22%20stroke%3D%22%239CB6CC%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M94%2048c11-4%2018-13%2027-30%201%2010-2%2017-7%2023%207-2%2013-6%2019-13-2%2013-10%2022-21%2026%206%200%2012-2%2017-5-3%2010-11%2015-23%2016%22/%3E%3Cpath%20d%3D%22M31%2047h68a5%205%200%200%201%205%205v39a5%205%200%200%201-5%205H31a5%205%200%200%201-5-5V52a5%205%200%200%201%205-5Z%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22m27%2050%2035%2025a5%205%200%200%200%206%200l35-25m-75%2042%2025-19m49%2019L77%2073%22/%3E%3Cpath%20d%3D%22M9%2062h9M4%2072h10m-4%2010h8%22%20stroke%3D%22%23A89F90%22%20stroke-width%3D%221%22/%3E%3Ccircle%20cx%3D%2265%22%20cy%3D%2275%22%20r%3D%224.5%22%20fill%3D%22%23C48196%22%20stroke%3D%22%230D1015%22%20stroke-width%3D%221.15%22/%3E%3C/svg%3E");
+    }
+    [data-slot='thread'] [data-slot='aui_intro'] > div > .wordmark {
+      grid-area: 1 / 2;
+      align-self: end;
+      display: flex;
+      align-items: center;
+      gap: 0.75em;
+      width: auto !important;
+      margin: 0;
+      container-type: normal;
+      mix-blend-mode: normal;
+      color: #9CB6CC;
+      font: 600 11px/1.3 ui-monospace, monospace;
+      letter-spacing: 0.19em;
+      text-transform: uppercase;
+    }
+    [data-slot='thread'] [data-slot='aui_intro'] > div > .wordmark > span,
+    [data-slot='thread'] [data-slot='aui_intro'] > div > p:not(.wordmark) { display: none; }
+    [data-slot='thread'] [data-slot='aui_intro'] > div > .wordmark::before { content: 'Hermes'; }
+    [data-slot='thread'] [data-slot='aui_intro'] > div > .wordmark::after {
+      content: '';
+      width: min(3.5rem, 13vw);
+      height: 1px;
+      background: #536170;
+    }
+    [data-slot='thread'] [data-slot='aui_intro'] > div::after {
+      content: 'A fresh page.';
+      grid-area: 2 / 2;
+      align-self: start;
+      margin-top: 0.5rem;
+      color: #D2CABB;
+      font: 400 clamp(1.5625rem, 5.6vw, 3.25rem)/1.04 Georgia, serif;
+      letter-spacing: -0.045em;
+    }
+  }

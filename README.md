@@ -108,9 +108,10 @@ Tree-sitter extensions for Markdown table labels and unquoted YAML keys.
 
 ## Extras
 
-Kitty, VS Code / Hermes, and OpenCode themes live in `extras/`. See
+Kitty, VS Code, Hermes, and OpenCode themes live in `extras/`. See
 [extras/kitty/README.md](extras/kitty/README.md),
-[extras/vscode/README.md](extras/vscode/README.md), and
+[extras/vscode/README.md](extras/vscode/README.md),
+[extras/hermes/README.md](extras/hermes/README.md), and
 [extras/opencode/README.md](extras/opencode/README.md) for install
-instructions. [AGENTS.md](AGENTS.md) explains how to regenerate them after
+instructions. [AGENTS.md](AGENTS.md) explains how to keep them in sync after
 palette changes.

@@ -1,4 +1,4 @@
-# VS Code / Hermes
+# VS Code
 
 Two color themes generated from the same palettes as the Neovim schemes:
 
@@ -29,9 +29,9 @@ code --install-extension sundial-theme-0.1.0.vsix
 
 ## Hermes
 
-Hermes imports themes from the VS Code Marketplace. Until this extension is
-published there, use the JSON files in VS Code; once published, Hermes can
-install them from **Settings → Appearance → Install theme**.
+For Hermes, use the native skins in [`extras/hermes`](../hermes/README.md).
+The JSON themes remain available in VS Code and can be imported from the VS Code
+Marketplace once this extension is published there.
 
 Regenerate the JSON after palette changes:
 
